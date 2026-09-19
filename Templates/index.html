@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Finsta QuickLoans | Instant Loan Eligibility</title>
+<style>
+:root{
+  --primary:#2457e6;
+  --primary-dark:#1746c7;
+  --ink:#172033;
+  --muted:#697386;
+  --line:#e7eaf1;
+  --bg:#f5f7fb;
+  --card:#ffffff;
+  --success:#15803d;
+  --success-bg:#eaf8ef;
+  --warning:#a15c00;
+  --warning-bg:#fff6df;
+  --danger:#b42318;
+  --danger-bg:#fff0f0;
+  --shadow:0 16px 45px rgba(26,43,86,.08);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Inter,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5}
+button,input,select{font:inherit}
+button{cursor:pointer}
+.nav{height:72px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 6%;position:sticky;top:0;z-index:20}
+.logo{font-size:24px;font-weight:850;letter-spacing:-.5px;color:var(--primary)}.logo span{color:var(--ink)}
+.nav-links{display:flex;gap:24px}
+.nav-links a{color:#5d687c;text-decoration:none;font-weight:650;cursor:pointer}
+.nav-links a.active,.nav-links a:hover{color:var(--primary)}
+.container{max-width:1160px;margin:auto;padding:44px 24px}
+.page{display:none}.page.active{display:block}
+.hero{min-height:calc(100vh - 72px);display:grid;grid-template-columns:1.08fr .92fr;gap:55px;align-items:center}
+.kicker{display:inline-flex;padding:7px 11px;border-radius:999px;background:#edf2ff;color:var(--primary);font-size:12px;font-weight:800;letter-spacing:.5px}
+.hero h1{font-size:56px;line-height:1.06;letter-spacing:-1.8px;margin:17px 0}
+.hero h1 span{color:var(--primary)}
+.hero p{font-size:18px;color:var(--muted);max-width:650px;margin-bottom:28px}
+.btn{border:0;border-radius:11px;padding:13px 19px;font-weight:750;transition:.18s}
+.btn-primary{background:var(--primary);color:#fff}.btn-primary:hover{background:var(--primary-dark);transform:translateY(-1px)}
+.btn-secondary{background:#edf2ff;color:var(--primary)}
+.btn-ghost{background:#fff;color:#58647a;border:1px solid var(--line)}
+.btn:disabled{opacity:.55;cursor:not-allowed;transform:none}
+.hero-card{padding:27px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow)}
+.hero-card h3{font-size:20px;margin-bottom:14px}
+.stat{display:flex;justify-content:space-between;padding:16px 0;border-bottom:1px solid #edf0f5}
+.stat:last-child{border-bottom:0}.stat span{color:#5f6b7e}.stat strong{color:var(--primary)}
+.page-head{margin-bottom:24px}.page-head h2{font-size:34px;letter-spacing:-.6px}.page-head p{color:var(--muted);margin-top:5px}
+.form-card{padding:27px}
+.section-title{font-size:18px;margin-bottom:15px}
+.section-sub{font-size:13px;color:var(--muted);margin:-7px 0 17px}
+.form-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.field label{display:block;font-size:13px;font-weight:750;color:#566176;margin-bottom:7px}
+.field input,.field select{width:100%;padding:12px 13px;border:1px solid #dce1ea;border-radius:9px;background:#fff;outline:0;color:var(--ink)}
+.field input:focus,.field select:focus{border-color:var(--primary);box-shadow:0 0 0 3px #2457e615}
+.field .help{font-size:11px;color:#7e8899;margin-top:5px}
+.span-2{grid-column:span 2}.span-3{grid-column:1/-1}
+.divider{height:1px;background:#edf0f5;margin:26px 0}
+.callout{padding:13px 15px;border-radius:10px;background:#f5f7ff;border-left:4px solid var(--primary);font-size:13px;color:#58647a}
+.application-only{background:#fff8eb;border-left:4px solid #e9a23b}
+.actions{display:flex;gap:11px;margin-top:25px;flex-wrap:wrap}
+.results{margin-top:25px;display:none}.results.show{display:block}
+.project-strip{margin-top:24px;padding:16px 18px;background:#fff;border:1px solid var(--line);border-radius:13px;display:flex;justify-content:space-between;align-items:center;gap:20px;box-shadow:0 10px 28px rgba(26,43,86,.05)}
+.project-label{font-size:11px;color:#7b8596;font-weight:800;letter-spacing:.5px;text-transform:uppercase}
+.project-rate{font-size:24px;color:var(--primary);font-weight:850;margin-top:2px}
+.project-note{font-size:12px;color:#6f798b;text-align:right;max-width:300px}
+.project-history{margin-top:18px;padding:18px 20px;background:#f8faff;border:1px solid #e2e8ff;border-radius:13px}
+.history-title{font-size:14px;font-weight:850;color:var(--ink);margin-bottom:7px}
+.project-history p{font-size:13px;color:#677286;line-height:1.65;margin:0;max-width:720px}
+.result-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:18px}
+.amount-card,.risk-card{padding:28px}
+.eyebrow{font-size:13px;color:#707b8e;font-weight:650}
+.amount{font-size:46px;font-weight:850;color:var(--primary);letter-spacing:-1px;margin:5px 0}
+.amount-meta{color:#687386;font-size:14px}
+.result-message{margin-top:18px;padding:15px 17px;border-radius:11px;font-weight:720;font-size:14px}
+.result-message.positive{background:var(--success-bg);border:1px solid #ccebd7;color:var(--success)}
+.result-message.warning{background:var(--warning-bg);border:1px solid #f0ddb0;color:var(--warning)}
+.result-message.negative{background:var(--danger-bg);border:1px solid #efc8c4;color:var(--danger)}
+.risk-top{display:flex;justify-content:space-between;align-items:center;gap:15px}
+.badge{padding:7px 11px;border-radius:999px;font-size:12px;font-weight:800}
+.badge.low{background:#eaf8ef;color:var(--success)}
+.badge.moderate{background:#fff6df;color:var(--warning)}
+.badge.high{background:#fff0f0;color:var(--danger)}
+.badge.manual{background:#f1efff;color:#6844bd}
+.pd{font-size:30px;font-weight:820;margin-top:8px}
+.result-items{display:grid;grid-template-columns:repeat(2,1fr);gap:11px;margin-top:20px}
+.result-item{padding:14px;border-radius:10px;background:#f7f9fc}
+.result-item small{display:block;color:#7a8495;font-size:11px;margin-bottom:3px}.result-item strong{font-size:18px}
+
+.amortization{margin-top:20px;padding:20px;background:#fff;border:1px solid var(--line);border-radius:15px}
+.amortization-head{display:flex;justify-content:space-between;align-items:flex-start;gap:15px;margin-bottom:14px}
+.amortization-head h4{font-size:17px}
+.amortization-head p{font-size:12px;color:#748093;margin-top:3px}
+.amortization-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+.amortization-stat{background:#f7f9fc;padding:12px;border-radius:9px}
+.amortization-stat small{display:block;color:#7a8495;font-size:11px;margin-bottom:3px}
+.amortization-stat strong{font-size:17px}
+.table-wrap{overflow:auto;border:1px solid #e8ebf1;border-radius:10px}
+.amortization-table{width:100%;border-collapse:collapse;min-width:620px}
+.amortization-table th,.amortization-table td{padding:11px 12px;border-bottom:1px solid #edf0f5;text-align:right;font-size:12px}
+.amortization-table th{background:#f7f9fc;color:#566176;font-weight:800;position:sticky;top:0}
+.amortization-table th:first-child,.amortization-table td:first-child{text-align:center}
+.amortization-table tr:last-child td{border-bottom:0}
+@media(max-width:850px){.amortization-summary{grid-template-columns:1fr}}
+.explain{margin-top:18px;padding:18px;background:#fbfcff;border:1px solid #e5eaff;border-radius:13px}
+.explain h4{margin-bottom:9px}.formula{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;background:#fff;padding:11px;border-radius:9px;border:1px solid #e6e9ef;font-size:13px}
+.processing{display:none;position:fixed;inset:0;background:rgba(255,255,255,.9);z-index:50;align-items:center;justify-content:center}
+.processing.show{display:flex}.loader{width:46px;height:46px;border:4px solid #e4e9f3;border-top-color:var(--primary);border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 15px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.api-status{display:inline-flex;align-items:center;gap:7px;font-size:12px;color:#6e788a}
+.dot{width:8px;height:8px;border-radius:50%;background:#f0a43a}.dot.on{background:#16a34a}
+.loan-list{display:grid;gap:14px}
+.loan{padding:20px;display:flex;justify-content:space-between;align-items:center}.loan h4{margin-bottom:4px}.loan p{color:#748093;font-size:13px}
+.status{padding:6px 10px;border-radius:999px;background:#eaf8ef;color:var(--success);font-size:12px;font-weight:800}
+.footer{text-align:center;padding:32px 15px;color:#8891a1;font-size:12px}
+@media(max-width:850px){
+  .hero{grid-template-columns:1fr;min-height:auto;padding-top:70px;padding-bottom:70px}
+  .hero h1{font-size:42px}.project-strip{flex-direction:column;align-items:flex-start}.project-note{text-align:left;max-width:none}.form-grid,.result-grid{grid-template-columns:1fr}.span-2,.span-3{grid-column:auto}
+  .nav{padding:0 20px}.nav-links{gap:12px}.nav-links a{font-size:12px}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="logo">Finsta <span>QuickLoans</span></div>
+  <div class="nav-links">
+    <a id="homeLink" class="active" onclick="showPage('home')">Home</a>
+    <a id="eligibilityLink" onclick="showPage('eligibility')">Check Eligibility</a>
+    <a id="loansLink" onclick="showPage('loans')">My Loans</a>
+  </div>
+</nav>
+
+<main>
+
+<section id="home" class="page active">
+  <div class="container hero">
+    <div>
+      <div class="kicker">SMART CREDIT • SIMPLE EXPERIENCE</div>
+      <h1>Understand your loan eligibility <span>before you apply.</span></h1>
+      <p>Finsta QuickLoans combines affordability assessment with a machine-learning Probability of Default (PD) model to generate an indicative loan offer.</p>
+      <div class="actions">
+        <button class="btn btn-primary" onclick="showPage('eligibility')">Check My Eligibility →</button>
+        <button class="btn btn-secondary" onclick="showPage('loans')">View My Loans</button>
+      </div>
+
+      <div class="project-strip">
+        <div>
+          <div class="project-label">Indicative Interest Rate</div>
+          <div class="project-rate">12.00% – 33.00% p.a.</div>
+        </div>
+        <div class="project-note">Risk-based indicative pricing. Final lending terms are subject to underwriting.</div>
+      </div>
+
+      <div class="project-history">
+        <div class="history-title">My Project Journey</div>
+        <p>
+          I built Finsta QuickLoans as my personal fintech project to bring together finance,
+          credit-risk analysis and machine learning in a simple quick-loan experience. The project
+          uses a historical loan dataset to train a credit-risk model, then combines the model's
+          Probability of Default with an affordability and pricing policy to produce an indicative offer.
+        </p>
+      </div>
+    </div>
+
+    <div class="card hero-card">
+      <h3>How Finsta QuickLoans works</h3>
+      <div class="stat"><span>1. Enter your application details</span><strong>01</strong></div>
+      <div class="stat"><span>2. Calculate affordability baseline</span><strong>02</strong></div>
+      <div class="stat"><span>3. ML model estimates default risk</span><strong>03</strong></div>
+      <div class="stat"><span>4. Generate indicative offer</span><strong>04</strong></div>
+      <div style="margin-top:18px" class="api-status"><span id="homeDot" class="dot"></span><span id="homeStatus">Frontend demo mode</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="eligibility" class="page">
+  <div class="container">
+    <div class="page-head">
+      <h2>Check Loan Eligibility</h2>
+      <p>These are the application-time details used by the Finsta QuickLoans website-compatible credit model.</p>
+    </div>
+
+    <div class="card form-card">
+      <form id="eligibilityForm" onsubmit="runEligibility(event)">
+
+        <h3 class="section-title">Personal Information</h3>
+        <div class="form-grid">
+          <div class="field">
+            <label>Age</label>
+            <input id="age" type="number" min="18" max="75" value="30" required>
+          </div>
+
+          <div class="field">
+            <label>Gender</label>
+            <select id="gender">
+              <option>Male</option><option>Female</option><option>Other</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Marital Status</label>
+            <select id="marital">
+              <option>Single</option><option>Married</option><option>Divorced</option><option>Widowed</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Education</label>
+            <select id="education">
+              <option>High School</option><option>Graduate</option><option>Post Graduate</option><option>Professional Degree</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>City Tier</label>
+            <select id="cityTier">
+              <option>Tier 1</option><option>Tier 2</option><option>Tier 3</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Residence Type</label>
+            <select id="residence">
+              <option>Owned</option><option>Rented</option><option>Family Owned</option><option>Other</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Number of Dependants</label>
+            <input id="dependants" type="number" min="0" max="20" step="1" value="1" required>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <h3 class="section-title">Employment & Financial Information</h3>
+        <div class="section-sub">Enter the actual value wherever a numeric field is shown. Finsta QuickLoans does not convert these inputs into broad ranges on the application screen.</div>
+        <div class="form-grid">
+          <div class="field">
+            <label>Employment Type</label>
+            <select id="employment">
+              <option>Salaried - Private</option>
+              <option>Salaried - Government</option>
+              <option>Self Employed</option>
+              <option>Business</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Industry</label>
+            <select id="industry">
+              <option>Information Technology</option>
+              <option>Banking & Financial Services</option>
+              <option>Manufacturing</option>
+              <option>Healthcare & Pharmaceuticals</option>
+              <option>Retail & Consumer</option>
+              <option>Automobile</option>
+              <option>Construction & Real Estate</option>
+              <option>Education</option>
+              <option>Telecommunications</option>
+              <option>Energy & Utilities</option>
+              <option>Logistics & Transportation</option>
+              <option>Government / Public Sector</option>
+              <option>Other</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Years in Current Job / Business</label>
+            <input id="jobYears" type="number" min="0" max="60" step="0.1" value="4" required>
+          </div>
+
+          <div class="field">
+            <label>Last Drawn Monthly Salary (₹)</label>
+            <input id="salary" type="number" min="0" value="60000" required>
+            <div class="help">This is the monthly income used by the Finsta QuickLoans affordability baseline.</div>
+          </div>
+
+          <div class="field">
+            <label>Other Monthly Income (₹)</label>
+            <input id="otherIncome" type="number" min="0" value="10000">
+            <div class="help">Application information only. Not used by the current ML training model.</div>
+          </div>
+
+          <div class="field">
+            <label>Net Worth (₹)</label>
+            <input id="netWorth" type="number" min="0" value="500000">
+          </div>
+
+          <div class="field">
+            <label>Credit Score</label>
+            <input id="creditScore" type="number" min="300" max="900" value="760" required>
+          </div>
+
+          <div class="field">
+            <label>Existing Monthly EMI (₹)</label>
+            <input id="existingEMI" type="number" min="0" value="10000" required>
+          </div>
+
+          <div class="field">
+            <label>Existing Loans</label>
+            <input id="existingLoans" type="number" min="0" max="30" step="1" value="1" required>
+          </div>
+
+          <div class="field">
+            <label>Credit Card Utilisation (%)</label>
+            <input id="utilisation" type="range" min="0" max="100" step="1" value="25"
+                   oninput="document.getElementById('utilisationValue').textContent = this.value + '%'">
+            <div class="help" style="display:flex;justify-content:space-between;align-items:center;margin-top:8px">
+              <span>0%</span>
+              <strong id="utilisationValue">25%</strong>
+              <span>100%</span>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Prior Default / Write-off</label>
+            <select id="priorDefault">
+              <option value="0">No</option>
+              <option value="1">Yes</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="callout application-only" style="margin-top:18px">
+          <strong>Other income note:</strong> Other Monthly Income is collected for the application and can be stored with the case, but the current trained PD model does not use it as a prediction feature.
+        </div>
+
+        <div class="divider"></div>
+
+        <h3 class="section-title">Loan Request</h3>
+        <div class="form-grid">
+          <div class="field">
+            <label>Requested Loan Amount (₹)</label>
+            <input id="requestedAmount" type="number" min="1000" value="100000" required>
+          </div>
+
+          <div class="field">
+            <label>Requested Tenure</label>
+            <select id="tenure">
+              <option value="3">3 months</option>
+              <option value="6" selected>6 months</option>
+              <option value="9">9 months</option>
+              <option value="12">12 months</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Application Channel</label>
+            <select id="channel">
+              <option>Organic/Play Store</option>
+              <option>Website</option>
+              <option>Partner</option>
+              <option>Mobile App</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="btn btn-primary" type="submit">Check Eligibility</button>
+          <button class="btn btn-ghost" type="button" onclick="resetForm()">Reset</button>
+        </div>
+      </form>
+
+      <div id="results" class="results">
+
+        <div class="result-grid">
+          <div class="card amount-card">
+            <div class="eyebrow">Maximum Indicative Eligible Amount</div>
+            <div id="eligibleAmount" class="amount">₹0</div>
+            <div class="amount-meta">Requested amount: <strong id="requestedDisplay">₹0</strong></div>
+
+            <div id="eligibilityMessage" class="result-message positive">
+              Your requested amount is within the indicative eligibility limit.
+            </div>
+
+            <div class="result-items">
+              <div class="result-item">
+                <small>Baseline Affordability</small>
+                <strong id="baselineDisplay">₹0</strong>
+              </div>
+              <div class="result-item">
+                <small>Indicative Interest Rate</small>
+                <strong id="interestDisplay">0.00% p.a.</strong>
+              </div>
+              <div class="result-item">
+                <small>Requested Tenure</small>
+                <strong id="tenureDisplay">0 months</strong>
+              </div>
+              <div class="result-item">
+                <small>Monthly Salary</small>
+                <strong id="salaryDisplay">₹0</strong>
+              </div>
+            </div>
+
+            <div class="explain">
+              <h4>How the affordability baseline is calculated</h4>
+              <div class="formula">(Last Drawn Monthly Salary − Existing Monthly EMI) × 12 × 50%</div>
+            </div>
+          </div>
+
+          <div class="card risk-card">
+            <div class="risk-top">
+              <div>
+                <div class="eyebrow">Machine Learning Risk Assessment</div>
+                <div id="pdDisplay" class="pd">0.00%</div>
+              </div>
+              <span id="riskBadge" class="badge moderate">Moderate Risk</span>
+            </div>
+
+            <div class="result-items">
+              <div class="result-item">
+                <small>Credit Score</small>
+                <strong id="creditDisplay">0</strong>
+              </div>
+              <div class="result-item">
+                <small>Existing EMI</small>
+                <strong id="emiDisplay">₹0</strong>
+              </div>
+              <div class="result-item">
+                <small>Other Monthly Income</small>
+                <strong id="otherIncomeDisplay">₹0</strong>
+              </div>
+              <div class="result-item">
+                <small>Credit Card Utilisation</small>
+                <strong id="utilisationDisplay">0%</strong>
+              </div>
+              <div class="result-item">
+                <small>Decision Status</small>
+                <strong id="decisionDisplay">—</strong>
+              </div>
+            </div>
+
+            <div class="callout" style="margin-top:18px">
+              The Probability of Default is produced by the trained Finsta QuickLoans credit-risk model. The indicative amount and rate are then calculated by the policy layer.
+            </div>
+          </div>
+        </div>
+
+        <div id="amortizationSection" class="amortization" style="display:none">
+          <div class="amortization-head">
+            <div>
+              <h4>Indicative Amortization Schedule</h4>
+              <p id="amortizationNote">Illustrative monthly repayment schedule based on the indicative amount and interest rate.</p>
+            </div>
+          </div>
+
+          <div class="amortization-summary">
+            <div class="amortization-stat">
+              <small>Loan Amount Used</small>
+              <strong id="schedulePrincipal">₹0</strong>
+            </div>
+            <div class="amortization-stat">
+              <small>Monthly EMI</small>
+              <strong id="scheduleEmi">₹0</strong>
+            </div>
+            <div class="amortization-stat">
+              <small>Total Interest</small>
+              <strong id="scheduleInterest">₹0</strong>
+            </div>
+          </div>
+
+          <div class="table-wrap">
+            <table class="amortization-table">
+              <thead>
+                <tr>
+                  <th>Month</th>
+                  <th>Opening Balance</th>
+                  <th>EMI</th>
+                  <th>Interest</th>
+                  <th>Principal</th>
+                  <th>Closing Balance</th>
+                </tr>
+              </thead>
+              <tbody id="amortizationBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button id="acceptBtn" class="btn btn-primary" onclick="acceptApplication()">Accept & Continue</button>
+          <button class="btn btn-secondary" onclick="forgoApplication()">Forgo</button>
+          <button class="btn btn-ghost" onclick="showPage('eligibility')">Edit Details</button>
+        </div>
+
+        <div id="decisionMessage" class="result-message" style="display:none"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="loans" class="page">
+  <div class="container">
+    <div class="page-head">
+      <h2>My Loans</h2>
+      <p>Your accepted applications and completed loans will appear here.</p>
+    </div>
+
+    <div class="loan-list">
+      <div class="card loan" id="activeLoanCard">
+        <div>
+          <h4>No active loan</h4>
+          <p>Accept an eligible offer to create an application.</p>
+        </div>
+        <span class="status">READY</span>
+      </div>
+
+      <div class="card loan">
+        <div>
+          <h4>Completed Loan — Demo</h4>
+          <p>₹30,000 • 6 months • Fully repaid</p>
+        </div>
+        <span class="status">COMPLETED</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<div id="processing" class="processing">
+  <div style="text-align:center">
+    <div class="loader"></div>
+    <strong>Assessing your application...</strong>
+    <div id="processingText" style="color:#6f7a8d;margin-top:5px">Running affordability and credit-risk assessment</div>
+  </div>
+</div>
+
+<footer class="footer">
+  Finsta QuickLoans • Personal fintech project prototype • Indicative eligibility only • Final lending decision subject to underwriting
+</footer>
+
+<script>
+/*
+  ============================================================
+  FINSTA QUICKLOANS MODEL INTEGRATION
+  ============================================================
+
+  Current setting:
+    DEMO_MODE = true
+
+  This lets the HTML file work by itself so you can test the UI.
+
+  When Flask is ready:
+    1. Change DEMO_MODE to false.
+    2. Set API_URL to your Flask endpoint.
+    3. The backend should return:
+       {
+         "pd": 0.082,
+         "risk_category": "Low Risk",
+         "indicative_eligible_amount": 270000,
+         "indicative_interest_rate": 15.2
+       }
+
+  Other Monthly Income can be stored by the backend but is NOT
+  passed to the trained ML feature vector in the current model.
+*/
+
+const DEMO_MODE = true;
+const API_URL = "/api/eligibility";
+
+let latestResult = null;
+
+function showPage(page){
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  document.getElementById(page).classList.add("active");
+
+  document.querySelectorAll(".nav-links a").forEach(a => a.classList.remove("active"));
+  const activeLink = document.getElementById(page + "Link");
+  if(activeLink) activeLink.classList.add("active");
+
+  window.scrollTo({top:0, behavior:"smooth"});
+}
+
+function money(value){
+  return "₹" + Math.round(Number(value) || 0).toLocaleString("en-IN");
+}
+
+function readApplication(){
+  return {
+    age: Number(document.getElementById("age").value),
+    gender: document.getElementById("gender").value,
+    marital_status: document.getElementById("marital").value,
+    education: document.getElementById("education").value,
+    city_tier: document.getElementById("cityTier").value,
+    residence_type: document.getElementById("residence").value,
+    number_of_dependants: Number(document.getElementById("dependants").value),
+    employment_type: document.getElementById("employment").value,
+    industry: document.getElementById("industry").value,
+    years_in_current_job: Number(document.getElementById("jobYears").value),
+
+    last_drawn_monthly_salary: Number(document.getElementById("salary").value),
+    other_monthly_income: Number(document.getElementById("otherIncome").value) || 0,
+
+    net_worth: Number(document.getElementById("netWorth").value) || 0,
+    credit_score: Number(document.getElementById("creditScore").value),
+    existing_monthly_emi: Number(document.getElementById("existingEMI").value),
+    existing_loans: Number(document.getElementById("existingLoans").value),
+    credit_card_utilisation: Number(document.getElementById("utilisation").value),
+    prior_default: Number(document.getElementById("priorDefault").value),
+
+    requested_amount: Number(document.getElementById("requestedAmount").value),
+    requested_tenure: Number(document.getElementById("tenure").value),
+    application_channel: document.getElementById("channel").value
+  };
+}
+
+function calculateBaseline(app){
+  return Math.max(
+    0,
+    (app.last_drawn_monthly_salary - app.existing_monthly_emi) * 12 * 0.50
+  );
+}
+
+function demoPD(app){
+  /*
+    IMPORTANT:
+    This is ONLY a front-end demonstration fallback.
+    It is NOT the trained Random Forest model.
+
+    The real site will replace this with:
+        Flask -> saved .joblib -> predict_proba()
+  */
+
+  let risk = 0.08;
+
+  if(app.credit_score < 600) risk += 0.17;
+  else if(app.credit_score < 650) risk += 0.11;
+  else if(app.credit_score < 700) risk += 0.06;
+  else if(app.credit_score >= 800) risk -= 0.025;
+  else if(app.credit_score >= 750) risk -= 0.015;
+
+  if(app.existing_loans >= 3) risk += 0.04;
+  else if(app.existing_loans >= 2) risk += 0.02;
+
+  if(app.existing_monthly_emi > app.last_drawn_monthly_salary * 0.35) risk += 0.06;
+  else if(app.existing_monthly_emi > app.last_drawn_monthly_salary * 0.25) risk += 0.025;
+
+  if(app.credit_card_utilisation > 80) risk += 0.07;
+  else if(app.credit_card_utilisation > 60) risk += 0.04;
+  else if(app.credit_card_utilisation > 40) risk += 0.015;
+
+  if(app.prior_default === 1) risk += 0.16;
+
+  if(app.years_in_current_job < 1) risk += 0.025;
+
+  return Math.max(0.01, Math.min(0.55, risk));
+}
+
+function riskCategory(pd){
+  if(pd < 0.05) return "Very Low Risk";
+  if(pd < 0.10) return "Low Risk";
+  if(pd < 0.15) return "Moderate Risk";
+  if(pd < 0.25) return "High Risk";
+  if(pd < 0.35) return "Very High Risk";
+  return "Decline / Manual Review";
+}
+
+function riskClass(category){
+  if(category.includes("Very Low") || category.includes("Low")) return "low";
+  if(category.includes("Moderate")) return "moderate";
+  if(category.includes("High")) return "high";
+  return "manual";
+}
+
+/*
+  Current prototype amount-policy bands.
+  These are policy assumptions and can later be calibrated against
+  observed portfolio performance.
+
+  PD < 5%   -> 100%
+  5–10%     -> 90%
+  10–15%    -> 75%
+  15–25%    -> 50%
+  25–35%    -> 25%
+  >=35%     -> no indicative limit
+*/
+function amountFactor(pd){
+  if(pd < 0.05) return 1.00;
+  if(pd < 0.10) return 0.90;
+  if(pd < 0.15) return 0.75;
+  if(pd < 0.25) return 0.50;
+  if(pd < 0.35) return 0.25;
+  return 0.00;
+}
+
+/*
+  Indicative pricing range:
+  minimum 12% p.a.
+  maximum 33% p.a.
+
+  Risk premium rises continuously with PD.
+  Tenure adds a small premium.
+*/
+function indicativeRate(pd, tenure){
+  const pricedPD = Math.min(pd, 0.35);
+  const baseRate = 12.0;
+  const riskPremium = 21.0 * (pricedPD / 0.35);
+
+  const tenurePremium = {
+    3: 0,
+    6: 0.5,
+    9: 1.0,
+    12: 1.5
+  }[tenure] ?? 1.5;
+
+  return Math.min(
+    33.0,
+    Math.max(12.0, baseRate + riskPremium + tenurePremium)
+  );
+}
+
+
+function calculateAmortization(principal, annualRate, tenureMonths){
+  principal = Number(principal) || 0;
+  annualRate = Number(annualRate) || 0;
+  tenureMonths = Number(tenureMonths) || 0;
+
+  if(principal <= 0 || tenureMonths <= 0){
+    return {
+      emi: 0,
+      totalInterest: 0,
+      schedule: []
+    };
+  }
+
+  const monthlyRate = annualRate / 100 / 12;
+
+  let emi;
+  if(monthlyRate === 0){
+    emi = principal / tenureMonths;
+  }else{
+    emi = principal * monthlyRate *
+      Math.pow(1 + monthlyRate, tenureMonths) /
+      (Math.pow(1 + monthlyRate, tenureMonths) - 1);
+  }
+
+  let balance = principal;
+  let totalInterest = 0;
+  const schedule = [];
+
+  for(let month = 1; month <= tenureMonths; month++){
+    const opening = balance;
+    let interest = opening * monthlyRate;
+    let principalPart = emi - interest;
+    let payment = emi;
+
+    // Correct final-payment rounding/closing balance.
+    if(month === tenureMonths){
+      principalPart = opening;
+      payment = principalPart + interest;
+    }
+
+    balance = Math.max(0, opening - principalPart);
+    totalInterest += interest;
+
+    schedule.push({
+      month,
+      opening,
+      emi: payment,
+      interest,
+      principal: principalPart,
+      closing: balance
+    });
+  }
+
+  return {
+    emi,
+    totalInterest,
+    schedule
+  };
+}
+
+function renderAmortization(app, result){
+  const section = document.getElementById("amortizationSection");
+  const body = document.getElementById("amortizationBody");
+
+  const eligible = Number(result.indicative_eligible_amount || 0);
+  const requested = Number(app.requested_amount || 0);
+  const rate = Number(result.indicative_interest_rate || 0);
+  const tenure = Number(app.requested_tenure || 0);
+
+  if(eligible <= 0 || rate <= 0 || tenure <= 0){
+    section.style.display = "none";
+    return;
+  }
+
+  // Use the requested amount when it fits inside the indicative limit.
+  // If the request exceeds the limit, show an illustrative schedule
+  // for the maximum indicative eligible amount.
+  const principal = Math.min(requested, eligible);
+  const usedEligibleLimit = requested > eligible;
+
+  const amortization = calculateAmortization(principal, rate, tenure);
+
+  document.getElementById("schedulePrincipal").textContent = money(principal);
+  document.getElementById("scheduleEmi").textContent = money(amortization.emi);
+  document.getElementById("scheduleInterest").textContent = money(amortization.totalInterest);
+
+  document.getElementById("amortizationNote").textContent =
+    usedEligibleLimit
+      ? "Illustration based on the maximum indicative eligible amount because the requested amount exceeds the current indicative limit."
+      : "Illustration based on the requested loan amount and indicative interest rate.";
+
+  body.innerHTML = amortization.schedule.map(row => `
+    <tr>
+      <td>${row.month}</td>
+      <td>${money(row.opening)}</td>
+      <td>${money(row.emi)}</td>
+      <td>${money(row.interest)}</td>
+      <td>${money(row.principal)}</td>
+      <td>${money(row.closing)}</td>
+    </tr>
+  `).join("");
+
+  section.style.display = "block";
+}
+
+async function getAssessment(app){
+  if(DEMO_MODE){
+    const pd = demoPD(app);
+    const baseline = calculateBaseline(app);
+    const category = riskCategory(pd);
+    const factor = amountFactor(pd);
+
+    return {
+      pd,
+      risk_category: category,
+      baseline_amount: baseline,
+      indicative_eligible_amount: baseline * factor,
+      indicative_interest_rate: indicativeRate(pd, app.requested_tenure),
+      demo: true
+    };
+  }
+
+  const response = await fetch(API_URL, {
+    method: "POST",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify(app)
+  });
+
+  if(!response.ok){
+    throw new Error("The credit-risk API could not process the application.");
+  }
+
+  return await response.json();
+}
+
+function setProcessing(show, text="Running affordability and credit-risk assessment"){
+  document.getElementById("processing").classList.toggle("show", show);
+  document.getElementById("processingText").textContent = text;
+}
+
+async function runEligibility(event){
+  event.preventDefault();
+
+  const app = readApplication();
+
+  if(app.last_drawn_monthly_salary <= 0){
+    alert("Please enter a valid last drawn monthly salary.");
+    return;
+  }
+
+  if(app.existing_monthly_emi < 0){
+    alert("Existing EMI cannot be negative.");
+    return;
+  }
+
+  if(app.credit_score < 300 || app.credit_score > 900){
+    alert("Please enter a valid credit score between 300 and 900.");
+    return;
+  }
+
+  if(app.number_of_dependants < 0 || app.number_of_dependants > 20){
+    alert("Please enter a valid number of dependants.");
+    return;
+  }
+
+  if(app.years_in_current_job < 0 || app.years_in_current_job > 60){
+    alert("Please enter a valid number of years in the current job/business.");
+    return;
+  }
+
+  if(app.existing_loans < 0 || app.existing_loans > 30){
+    alert("Please enter a valid number of existing loans.");
+    return;
+  }
+
+  setProcessing(true);
+
+  try{
+    const result = await getAssessment(app);
+    latestResult = {app, result};
+
+    renderResult(app, result);
+
+    document.getElementById("results").classList.add("show");
+    document.getElementById("results").scrollIntoView({behavior:"smooth", block:"start"});
+  }catch(error){
+    alert(error.message);
+  }finally{
+    setProcessing(false);
+  }
+}
+
+function renderResult(app, result){
+  const pd = Number(result.pd);
+  const category = result.risk_category || riskCategory(pd);
+  const eligible = Number(result.indicative_eligible_amount || 0);
+  const baseline = Number(result.baseline_amount ?? calculateBaseline(app));
+  const rate = Number(result.indicative_interest_rate || 0);
+
+  document.getElementById("eligibleAmount").textContent = money(eligible);
+  document.getElementById("requestedDisplay").textContent = money(app.requested_amount);
+  document.getElementById("baselineDisplay").textContent = money(baseline);
+  document.getElementById("interestDisplay").textContent = rate.toFixed(2) + "% p.a.";
+  document.getElementById("tenureDisplay").textContent = app.requested_tenure + " months";
+  document.getElementById("salaryDisplay").textContent = money(app.last_drawn_monthly_salary);
+
+  document.getElementById("pdDisplay").textContent = (pd * 100).toFixed(2) + "%";
+  document.getElementById("creditDisplay").textContent = app.credit_score;
+  document.getElementById("emiDisplay").textContent = money(app.existing_monthly_emi);
+  document.getElementById("otherIncomeDisplay").textContent = money(app.other_monthly_income);
+  document.getElementById("utilisationDisplay").textContent = app.credit_card_utilisation + "%";
+
+  const badge = document.getElementById("riskBadge");
+  badge.textContent = category;
+  badge.className = "badge " + riskClass(category);
+
+  renderAmortization(app, result);
+
+  const message = document.getElementById("eligibilityMessage");
+  const decision = document.getElementById("decisionDisplay");
+  const acceptBtn = document.getElementById("acceptBtn");
+
+  if(eligible <= 0){
+    message.className = "result-message negative";
+    message.innerHTML = "✕ Based on the current risk policy, we cannot provide an indicative eligible amount for this application.";
+    decision.textContent = "Not eligible";
+    acceptBtn.disabled = true;
+  }else if(app.requested_amount <= eligible){
+    message.className = "result-message positive";
+    message.innerHTML = "✓ Good news! Your requested loan amount is within the maximum indicative eligible amount.";
+    decision.textContent = "Within limit";
+    acceptBtn.disabled = false;
+  }else{
+    message.className = "result-message warning";
+    message.innerHTML = "⚠ Your requested amount is above the current indicative eligible limit. A lower requested amount may fit within the assessment.";
+    decision.textContent = "Above limit";
+    acceptBtn.disabled = true;
+  }
+}
+
+function acceptApplication(){
+  if(!latestResult) return;
+
+  setProcessing(true, "Creating your application record...");
+
+  setTimeout(() => {
+    setProcessing(false);
+
+    const app = latestResult.app;
+    const result = latestResult.result;
+
+    localStorage.setItem("Finsta QuickLoans_active_application", JSON.stringify({
+      ...app,
+      pd: result.pd,
+      risk_category: result.risk_category,
+      eligible_amount: result.indicative_eligible_amount,
+      indicative_interest_rate: result.indicative_interest_rate,
+      status: "Processing"
+    }));
+
+    updateLoanCard();
+    showPage("loans");
+  }, 900);
+}
+
+function forgoApplication(){
+  if(!latestResult) return;
+
+  const msg = document.getElementById("decisionMessage");
+  msg.style.display = "block";
+  msg.className = "result-message warning";
+  msg.textContent = "Inquiry recorded. This is not treated as a completed loan outcome and is not used as a default-training record.";
+}
+
+function updateLoanCard(){
+  const raw = localStorage.getItem("Finsta QuickLoans_active_application");
+  const card = document.getElementById("activeLoanCard");
+
+  if(!raw){
+    card.innerHTML = `
+      <div>
+        <h4>No active loan</h4>
+        <p>Accept an eligible offer to create an application.</p>
+      </div>
+      <span class="status">READY</span>
+    `;
+    return;
+  }
+
+  const a = JSON.parse(raw);
+
+  card.innerHTML = `
+    <div>
+      <h4>Loan Application — Processing</h4>
+      <p>${money(a.requested_amount)} requested • ${a.requested_tenure} months • Indicative rate ${Number(a.indicative_interest_rate).toFixed(2)}%</p>
+    </div>
+    <span class="status">PROCESSING</span>
+  `;
+}
+
+function resetForm(){
+  document.getElementById("eligibilityForm").reset();
+  document.getElementById("utilisationValue").textContent =
+    document.getElementById("utilisation").value + "%";
+  document.getElementById("results").classList.remove("show");
+  document.getElementById("amortizationSection").style.display = "none";
+  document.getElementById("amortizationBody").innerHTML = "";
+  document.getElementById("decisionMessage").style.display = "none";
+  document.getElementById("acceptBtn").disabled = false;
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("utilisationValue").textContent =
+    document.getElementById("utilisation").value + "%";
+
+  updateLoanCard();
+
+  if(!DEMO_MODE){
+    document.getElementById("homeDot").classList.add("on");
+    document.getElementById("homeStatus").textContent = "Connected to credit-risk API";
+  }
+});
+</script>
+
+</body>
+</html>
